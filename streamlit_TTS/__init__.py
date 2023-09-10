@@ -8,11 +8,11 @@ from pydub import AudioSegment
 _RELEASE = False
 
 if not _RELEASE:
-    _component_func = components.declare_component("component",url="http://localhost:3001")
+    _component_func = components.declare_component("streamlit_TTS",url="http://localhost:3001")
 else:
     parent_dir = os.path.dirname(os.path.abspath(__file__))
-    build_dir = os.path.join(parent_dir, "frontend-react/build")
-    _component_func = components.declare_component("component", path=build_dir)
+    build_dir = os.path.join(parent_dir, "frontend/build")
+    _component_func = components.declare_component("streamlit_TTS", path=build_dir)
 
 def auto_play(audio_bytes,key=None):
     audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
@@ -28,7 +28,7 @@ def text_to_audio(text, language='en'):
     mp3_buffer.seek(0)
 
     # Convert MP3 to WAV and make it mono
-    audio = AudioSegment.from_file(mp3_buffer,format="mp3")
+    audio = AudioSegment.from_file(mp3_buffer,format="mp3").set_channels(1)
 
     # Extract audio properties
     sample_rate = audio.frame_rate
@@ -51,42 +51,18 @@ def text_to_speech(text,language='en'):
 
 if not _RELEASE:
     import streamlit as st
-    from streamlit_mic_recorder import mic_recorder, speech_to_text
-    from deep_translator import GoogleTranslator
+    #from streamlit_TTS import auto_play, text_to_speech, text_to_audio
 
-    st.subheader("Traduction voix / texte")
+    from gtts.lang import tts_langs
 
-    source=st.text_input("Choissez une langue source:",'en')
-    dest=st.text_input("Choissez une langue de destination:",'en')
+    langs=tts_langs().keys()
 
-    st.markdown("----")
+    lang=st.selectbox("Choose a language",options=langs)
+    text=st.text_input("Choose a text to speak out:")
+    speak=st.button("Speak it out!")
 
-    st.write("Enregistrez votre voix:")
-    spoken_text=speech_to_text(language=source, just_once=True)
-
-    st.write("Ou entrez du texte à traduire:")
-
-    written_text=st.text_input("")
-
-    st.markdown("----")
-
-    with_sound=st.checkbox("Avec son")
-    with_text=st.checkbox("Avec texte")
-
-    if spoken_text:
-        text=spoken_text
-    elif written_text:
-        text=written_text
-    else:
-        text=None
-    
-    
-    if text:
-        translated = GoogleTranslator(source=source, target=dest).translate(text)
-        if with_text:
-            st.markdown("----")
-            st.write("Texte traduit:")
-            st.write(translated)
-        if with_sound:
-            text_to_speech(text=translated,language=dest)
-
+    if lang and text and speak:
+        text_to_speech(text=text, language=lang)
+        #or
+        #audio=text_to_audio(text=text,language=lang)
+        #auto_play(audio['bytes'])

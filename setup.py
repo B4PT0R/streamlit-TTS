@@ -10,10 +10,10 @@ setuptools.setup(
     version="0.0.1",
     author="Baptiste Ferrand",
     author_email="bferrand.maths@gmail.com.com",
-    description="Streamlit component that allows you to convert text to spoken audio and play it directly in the browser",
+    description="Streamlit component that allows to convert text to speech and play it directly in the browser",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="",
+    url="https://github.com/B4PT0R/streamlit-TTS",
     packages=setuptools.find_packages(),
     include_package_data=True,
     classifiers=[],
@@ -24,6 +24,6 @@ setuptools.setup(
         # them here.
         "streamlit >= 0.63",
         "pydub",
-        "gTTS"
+        "gtts"
     ],
 )
