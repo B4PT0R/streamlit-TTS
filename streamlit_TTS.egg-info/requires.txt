@@ -1,0 +1,3 @@
+streamlit>=0.63
+pydub
+gtts

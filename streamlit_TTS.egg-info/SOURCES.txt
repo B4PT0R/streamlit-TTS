@@ -1,0 +1,10 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+streamlit_TTS/__init__.py
+streamlit_TTS.egg-info/PKG-INFO
+streamlit_TTS.egg-info/SOURCES.txt
+streamlit_TTS.egg-info/dependency_links.txt
+streamlit_TTS.egg-info/requires.txt
+streamlit_TTS.egg-info/top_level.txt

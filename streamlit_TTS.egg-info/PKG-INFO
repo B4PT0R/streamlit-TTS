@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: streamlit-TTS
+Version: 0.0.1
+Summary: Streamlit component that allows to convert text to speech and play it directly in the browser
+Home-page: https://github.com/B4PT0R/streamlit-TTS
+Author: Baptiste Ferrand
+Author-email: bferrand.maths@gmail.com.com
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# streamlit-custom-component
+
+Streamlit component that allows you to convert text to speech and autoplay the audio directly.
+
+## Installation instructions
+
+```sh
+pip install streamlit-TTS
+```
+
+## Usage instructions
+
+```python
+import streamlit as st
+#from streamlit_TTS import auto_play, text_to_speech, text_to_audio
+
+from gtts.lang import tts_langs
+
+langs=tts_langs().keys()
+
+audio=text_to_audio("Choose a language, type some text, and click 'Speak it out!'.",language='en')
+auto_play(audio['bytes'])
+
+lang=st.selectbox("Choose a language",options=langs)
+text=st.text_input("Choose a text to speak out:")
+speak=st.button("Speak it out!")
+
+if lang and text and speak:
+    text_to_speech(text=text, language=lang)
+```
