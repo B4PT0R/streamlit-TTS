@@ -1,0 +1,17 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+streamlit_TTS/__init__.py
+streamlit_TTS.egg-info/PKG-INFO
+streamlit_TTS.egg-info/SOURCES.txt
+streamlit_TTS.egg-info/dependency_links.txt
+streamlit_TTS.egg-info/requires.txt
+streamlit_TTS.egg-info/top_level.txt
+streamlit_TTS/frontend/build/asset-manifest.json
+streamlit_TTS/frontend/build/bootstrap.min.css
+streamlit_TTS/frontend/build/index.html
+streamlit_TTS/frontend/build/static/css/main.31d6cfe0.css
+streamlit_TTS/frontend/build/static/js/main.e0702335.js
+streamlit_TTS/frontend/build/static/js/main.e0702335.js.LICENSE.txt
+streamlit_TTS/frontend/build/static/js/main.e0702335.js.map
