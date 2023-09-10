@@ -21,7 +21,7 @@ langs=tts_langs().keys()
 #get the audio first
 audio=text_to_audio("Choose a language, type some text, and click 'Speak it out!'.",language='en')
 #then play it
-auto_play(audio['bytes'])
+auto_play(audio)
 
 lang=st.selectbox("Choose a language",options=langs)
 text=st.text_input("Choose a text to speak out:")

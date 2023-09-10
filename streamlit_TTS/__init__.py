@@ -4,6 +4,7 @@ import streamlit.components.v1 as components
 from gtts import gTTS
 import io
 from pydub import AudioSegment
+import time 
 
 _RELEASE = True
 
@@ -15,15 +16,15 @@ else:
     _component_func = components.declare_component("streamlit_TTS", path=build_dir)
 
 def auto_play(audio,key=None):
-    audio_bytes = audio["bytes"]
-    sample_rate = audio["sample_rate"]
-    sample_width = audio["sample_width"]
-    total_samples = len(audio_bytes) / sample_width
-    duration = total_samples / sample_rate
-    audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
-    _component_func(audio_base64=audio_base64,key=key,default=None)
-    import time 
-    time.sleep(duration+0.3)
+    if audio:
+        audio_bytes = audio["bytes"]
+        sample_rate = audio["sample_rate"]
+        sample_width = audio["sample_width"]
+        total_samples = len(audio_bytes) / sample_width
+        duration = total_samples / sample_rate
+        audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
+        _component_func(audio_base64=audio_base64,key=key,default=None)
+        time.sleep(duration+0.3)
 
 def text_to_audio(text, language='en'):
     # Create MP3 audio
