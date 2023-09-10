@@ -54,7 +54,7 @@ def text_to_audio(text, language='en'):
 
 def text_to_speech(text,language='en'):
     audio=text_to_audio(text,language=language)
-    auto_play(audio['bytes'])
+    auto_play(audio)
 
 if not _RELEASE:
     import streamlit as st

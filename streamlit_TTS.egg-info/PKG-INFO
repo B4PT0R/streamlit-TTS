@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: streamlit-TTS
-Version: 0.0.3
+Version: 0.0.4
 Summary: Streamlit component that allows to convert text to speech and play it directly in the browser
 Home-page: https://github.com/B4PT0R/streamlit-TTS
 Author: Baptiste Ferrand
