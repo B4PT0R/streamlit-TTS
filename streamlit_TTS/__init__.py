@@ -57,12 +57,12 @@ if not _RELEASE:
 
     langs=tts_langs().keys()
 
+    audio=text_to_audio("Choose a language, type some text, and click 'Speak it out!'.",language='en')
+    auto_play(audio['bytes'])
+
     lang=st.selectbox("Choose a language",options=langs)
     text=st.text_input("Choose a text to speak out:")
     speak=st.button("Speak it out!")
 
     if lang and text and speak:
         text_to_speech(text=text, language=lang)
-        #or
-        #audio=text_to_audio(text=text,language=lang)
-        #auto_play(audio['bytes'])
