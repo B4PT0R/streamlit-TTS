@@ -14,10 +14,16 @@ else:
     build_dir = os.path.join(parent_dir, "frontend/build")
     _component_func = components.declare_component("streamlit_TTS", path=build_dir)
 
-def auto_play(audio_bytes,key=None):
+def auto_play(audio,key=None):
+    audio_bytes = audio["bytes"]
+    sample_rate = audio["sample_rate"]
+    sample_width = audio["sample_width"]
+    total_samples = len(audio_bytes) / sample_width
+    duration = total_samples / sample_rate
     audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
-    component_value = _component_func(audio_base64=audio_base64,key=key,default=None)
-    return component_value 
+    _component_func(audio_base64=audio_base64,key=key,default=None)
+    import time 
+    time.sleep(duration+0.3)
 
 def text_to_audio(text, language='en'):
     # Create MP3 audio
@@ -58,7 +64,7 @@ if not _RELEASE:
     langs=tts_langs().keys()
 
     audio=text_to_audio("Choose a language, type some text, and click 'Speak it out!'.",language='en')
-    auto_play(audio['bytes'])
+    auto_play(audio)
 
     lang=st.selectbox("Choose a language",options=langs)
     text=st.text_input("Choose a text to speak out:")
