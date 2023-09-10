@@ -12,7 +12,7 @@ pip install streamlit-TTS
 
 ```python
 import streamlit as st
-#from streamlit_TTS import auto_play, text_to_speech, text_to_audio
+from streamlit_TTS import auto_play, text_to_speech, text_to_audio
 
 from gtts.lang import tts_langs
 
