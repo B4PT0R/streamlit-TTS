@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
 Name: streamlit-TTS
-Version: 0.0.4
-Summary: Streamlit component that allows to convert text to speech and play it directly in the browser
+Version: 0.0.6
+Summary: Streamlit component providing tools to convert text to speech and play audio directly in the browser
 Home-page: https://github.com/B4PT0R/streamlit-TTS
 Author: Baptiste Ferrand
 Author-email: bferrand.maths@gmail.com.com
@@ -11,7 +11,7 @@ License-File: LICENSE
 
 # streamlit-TTS
 
-Streamlit component that allows you to convert text to speech and autoplay the audio directly.
+Streamlit component providing some tools to convert text to speech and autoplay the audio directly in the browser in an invisible iframe.
 
 ## Installation instructions
 
@@ -21,6 +21,48 @@ pip install streamlit-TTS
 
 ## Usage instructions
 
+Three functions are provided:
+
+1.
+
+```python
+auto_play(audio,wait=True,lag=0.25,key=None)
+```
+Plays some audio directly in the browser without showing an audio player.
+The iframe containing the component is made invisible and shouldn't mess with the app's layout.
+`audio` must be a dict with the following structure:
+
+```python
+audio={
+    'bytes':bytes, # wav audio bytes
+    'sample_rate':sample_rate, # the sample rate of the audio
+    'sample_width':sample_width, # the sample width of the audio
+    ... # possibly other keys that will be ignored by the function
+}
+```
+
+`wait` determines whether the component should pause execution of the python script until the audio has finished playing (avoids putting another audio on play while the previous one is still playing). Since there is no easy way, given the constraints of streamlit implementation, to get instant information from the front-end whether it has finished playing or not, the waiting time is calculated based on the duration of the audio passed. Works generally well, but can sometimes give poor results, depending on the communication lag between front end and back end. `lag` (in seconds) allows to adapt to this lag by waiting a bit more time to let the audio finish playing before resuming execution.
+
+2.
+
+```python
+audio=text_to_audio(text,language='en',cleanup_hook=None)
+```
+
+Converts some text in the chosen language into spoken audio (uses gTTS and pydub).
+A default cleanup of the text is being implemented before passing it to vocal synthesis (Markdown syntax elements, LaTeX formulas, links, long code snippets are removed). But you can pass your own as the `cleanup_hook` if you want more control. 
+The audio returned is a dictionary with the same structure as accepted by `auto_play`.
+(This function is provided for convenience, it's not a streamlit component.)
+
+3.
+```python
+text_to_speech(text,language='en',cleanup_hook=None,wait=False,lag=0.25,key=None)
+```
+
+Builds on the first two functions to convert text into speech and play the audio directly.
+
+
+## Example
 ```python
 import streamlit as st
 from streamlit_TTS import auto_play, text_to_speech, text_to_audio
@@ -40,5 +82,5 @@ speak=st.button("Speak it out!")
 
 if lang and text and speak:
     #plays the audio directly
-    text_to_speech(text=text, language=lang)
+    text_to_speech(text=text, language=lang,wait=True)
 ```

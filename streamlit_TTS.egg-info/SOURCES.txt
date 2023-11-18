@@ -12,6 +12,6 @@ streamlit_TTS/frontend/build/asset-manifest.json
 streamlit_TTS/frontend/build/bootstrap.min.css
 streamlit_TTS/frontend/build/index.html
 streamlit_TTS/frontend/build/static/css/main.31d6cfe0.css
-streamlit_TTS/frontend/build/static/js/main.e0702335.js
-streamlit_TTS/frontend/build/static/js/main.e0702335.js.LICENSE.txt
-streamlit_TTS/frontend/build/static/js/main.e0702335.js.map
+streamlit_TTS/frontend/build/static/js/main.cb3dcb7d.js
+streamlit_TTS/frontend/build/static/js/main.cb3dcb7d.js.LICENSE.txt
+streamlit_TTS/frontend/build/static/js/main.cb3dcb7d.js.map

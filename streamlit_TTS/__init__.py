@@ -4,7 +4,8 @@ import streamlit.components.v1 as components
 from gtts import gTTS
 import io
 from pydub import AudioSegment
-import time 
+import time
+import streamlit as st
 
 _RELEASE = True
 
@@ -15,7 +16,32 @@ else:
     build_dir = os.path.join(parent_dir, "frontend/build")
     _component_func = components.declare_component("streamlit_TTS", path=build_dir)
 
-def auto_play(audio,key=None):
+
+
+def cleanup(text):
+    import re
+    # Removes URLs
+    text = re.sub(r'http\S+|www.\S+', ' ', text, flags=re.MULTILINE)
+    # Removes LaTeX formulas
+    text = re.sub(r'\$.*?\$', ' ', text, flags=re.MULTILINE)
+    # Removes code snippets
+    text = re.sub(r'(```.*?```)', ' ', text, flags=re.DOTALL)
+    # Removes special characters from markdown syntax
+    text = re.sub(r'(\*\*|\*|__|_|>|\"|~~|``|`|#|\[|\]|\(|\)|!\[|\])', ' ', text)
+    return text
+
+def auto_play(audio,wait=True,lag=0.25,key=None):
+    height_hack = """
+<script>
+    var hide_me_list = window.parent.document.querySelectorAll('iframe');
+    for (let i = 0; i < hide_me_list.length; i++) { 
+        if (hide_me_list[i].height == 0) {
+            hide_me_list[i].parentNode.style.height = 0;
+            hide_me_list[i].parentNode.style.marginBottom = '-1rem';
+        };
+    };
+</script>
+"""
     if audio:
         audio_bytes = audio["bytes"]
         sample_rate = audio["sample_rate"]
@@ -24,10 +50,14 @@ def auto_play(audio,key=None):
         duration = total_samples / sample_rate
         audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
         _component_func(audio_base64=audio_base64,key=key,default=None)
-        time.sleep(duration+0.3)
+        components.html(height_hack, height=0)
+        if wait:
+            time.sleep(duration+lag)
 
-def text_to_audio(text, language='en'):
+def text_to_audio(text, language='en',cleanup_hook=None):
     # Create MP3 audio
+    clean= cleanup_hook or cleanup
+    text=clean(text)
     tts = gTTS(text=text, lang=language, slow=False)
     mp3_buffer = io.BytesIO()
     tts.write_to_fp(mp3_buffer)
@@ -52,9 +82,9 @@ def text_to_audio(text, language='en'):
         "sample_width": sample_width
     }
 
-def text_to_speech(text,language='en'):
+def text_to_speech(text,language='en',wait=True,lag=0.25,key=None):
     audio=text_to_audio(text,language=language)
-    auto_play(audio)
+    auto_play(audio,wait=wait,lag=lag,key=key)
 
 if not _RELEASE:
     import streamlit as st

@@ -1,24 +1,28 @@
 import {
-  StreamlitComponentBase,
-  withStreamlitConnection,
+    Streamlit,
+    StreamlitComponentBase,
+    withStreamlitConnection,
 } from "streamlit-component-lib"
 import React, { ReactNode } from "react"
 import './App.css'
 
 const AudioPlayer: React.FC<{ audioBase64: string }> = ({ audioBase64 }) => {
   React.useEffect(() => {
-      if (audioBase64) {
-          const audio = new Audio(`data:audio/wav;base64,${audioBase64}`);
-          audio.play();
-      }
-  }, [audioBase64]);
 
-  return null; // Ensure nothing is rendered on the page
+    Streamlit.setFrameHeight(0);
+
+    if (audioBase64) {
+        const audio = new Audio(`data:audio/wav;base64,${audioBase64}`);
+        audio.play();
+    }
+    }, [audioBase64]);
+
+    return null; // Ensure nothing is rendered on the page
 }
 
 interface State {}
 
-class Component extends StreamlitComponentBase<State> {
+class AutoPlay extends StreamlitComponentBase<State> {
     public state = {}
 
     public render = (): ReactNode => {
@@ -30,4 +34,4 @@ class Component extends StreamlitComponentBase<State> {
     }
 }
 
-export default withStreamlitConnection(Component);
+export default withStreamlitConnection(AutoPlay);

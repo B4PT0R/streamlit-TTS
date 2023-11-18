@@ -1,10 +1,10 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import Component from './App'
+import AutoPlay from './App'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Component />
+    <AutoPlay />
   </React.StrictMode>,
   document.getElementById("root")
 )
