@@ -45,7 +45,7 @@ The audio returned is a dictionary with the same structure as accepted by `auto_
 
 3.
 ```python
-text_to_speech(text,language='en',cleanup_hook=None,wait=False,lag=0.25,key=None)
+text_to_speech(text,language='en',cleanup_hook=None,wait=True,lag=0.25,key=None)
 ```
 
 Builds on the first two functions to convert text into speech and play the audio directly.
@@ -71,5 +71,5 @@ speak=st.button("Speak it out!")
 
 if lang and text and speak:
     #plays the audio directly
-    text_to_speech(text=text, language=lang,wait=True)
+    text_to_speech(text=text, language=lang)
 ```
