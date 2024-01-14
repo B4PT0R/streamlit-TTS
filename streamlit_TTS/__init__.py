@@ -6,6 +6,8 @@ import io
 from pydub import AudioSegment
 import time
 import streamlit as st
+import dotenv
+from openai import OpenAI
 
 _RELEASE = True
 
@@ -23,7 +25,8 @@ def cleanup(text):
     # Removes URLs
     text = re.sub(r'http\S+|www.\S+', ' ', text, flags=re.MULTILINE)
     # Removes LaTeX formulas
-    text = re.sub(r'\$.*?\$', ' ', text, flags=re.MULTILINE)
+    text = re.sub(r'\$\$.*?\$\$', ' ', text, flags=re.MULTILINE)
+    text = re.sub(r'\$.+?\$', ' ', text, flags=re.MULTILINE)
     # Removes code snippets
     text = re.sub(r'(```.*?```)', ' ', text, flags=re.DOTALL)
     # Removes special characters from markdown syntax
@@ -58,32 +61,85 @@ def text_to_audio(text, language='en',cleanup_hook=None):
     # Create MP3 audio
     clean= cleanup_hook or cleanup
     text=clean(text)
-    tts = gTTS(text=text, lang=language, slow=False)
-    mp3_buffer = io.BytesIO()
-    tts.write_to_fp(mp3_buffer)
+    if text.strip():
+        tts = gTTS(text=text, lang=language, slow=False)
+        mp3_buffer = io.BytesIO()
+        tts.write_to_fp(mp3_buffer)
 
-    mp3_buffer.seek(0)
+        mp3_buffer.seek(0)
 
-    # Convert MP3 to WAV and make it mono
-    audio = AudioSegment.from_file(mp3_buffer,format="mp3").set_channels(1)
+        # Convert MP3 to WAV and make it mono
+        audio = AudioSegment.from_file(mp3_buffer,format="mp3").set_channels(1)
 
-    # Extract audio properties
-    sample_rate = audio.frame_rate
-    sample_width = audio.sample_width
+        # Extract audio properties
+        sample_rate = audio.frame_rate
+        sample_width = audio.sample_width
 
-    # Export audio to WAV in memory buffer
-    wav_buffer = io.BytesIO()
-    audio.export(wav_buffer, format="wav")
+        # Export audio to WAV in memory buffer
+        wav_buffer = io.BytesIO()
+        audio.export(wav_buffer, format="wav")
 
-    # Return the required dictionary
-    return {
-        "bytes": wav_buffer.getvalue(),
-        "sample_rate": sample_rate,
-        "sample_width": sample_width
-    }
+        # Return the required dictionary
+        return {
+            "bytes": wav_buffer.getvalue(),
+            "sample_rate": sample_rate,
+            "sample_width": sample_width
+        }
+    else:
+        return None
+    
+def openai_text_to_audio(text, openai_api_key=None,language=None,cleanup_hook=None):
+    
+    if not 'openai_client' in st.session_state:
+        dotenv.load_dotenv()
+        st.session_state.openai_client=OpenAI(api_key=openai_api_key or os.getenv('OPENAI_API_KEY'))
+    
+    # Create MP3 audio
+    clean= cleanup_hook or cleanup
+    text=clean(text)
+    if text.strip():
+
+        client=st.session_state.openai_client
+
+        mp3_buffer = io.BytesIO()
+
+        response = client.audio.speech.create(
+        model="tts-1",
+        voice="shimmer",
+        input=text
+        )
+
+        for chunk in response.iter_bytes():
+            mp3_buffer.write(chunk)
+
+        mp3_buffer.seek(0)
+
+        # Convert MP3 to WAV and make it mono
+        audio = AudioSegment.from_file(mp3_buffer,format="mp3").set_channels(1)
+
+        # Extract audio properties
+        sample_rate = audio.frame_rate
+        sample_width = audio.sample_width
+
+        # Export audio to WAV in memory buffer
+        wav_buffer = io.BytesIO()
+        audio.export(wav_buffer, format="wav")
+
+        # Return the required dictionary
+        return {
+            "bytes": wav_buffer.getvalue(),
+            "sample_rate": sample_rate,
+            "sample_width": sample_width
+        }
+    else:
+        return None
 
 def text_to_speech(text,language='en',wait=True,lag=0.25,key=None):
     audio=text_to_audio(text,language=language)
+    auto_play(audio,wait=wait,lag=lag,key=key)
+
+def openai_text_to_speech(text,language=None,wait=True,lag=0.25,key=None):
+    audio=openai_text_to_audio(text,language=language)
     auto_play(audio,wait=wait,lag=lag,key=key)
 
 if not _RELEASE:
