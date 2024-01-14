@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
-Name: streamlit-TTS
-Version: 0.0.6
+Name: streamlit_TTS
+Version: 0.0.7
 Summary: Streamlit component providing tools to convert text to speech and play audio directly in the browser
 Home-page: https://github.com/B4PT0R/streamlit-TTS
 Author: Baptiste Ferrand
@@ -8,6 +8,9 @@ Author-email: bferrand.maths@gmail.com.com
 Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: streamlit>=0.63
+Requires-Dist: pydub
+Requires-Dist: gtts
 
 # streamlit-TTS
 
