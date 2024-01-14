@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setuptools.setup(
     name="streamlit_TTS",
-    version="0.0.6",
+    version="0.0.7",
     author="Baptiste Ferrand",
     author_email="bferrand.maths@gmail.com.com",
     description="Streamlit component providing tools to convert text to speech and play audio directly in the browser",
