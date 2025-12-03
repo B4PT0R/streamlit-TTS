@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "streamlit_TTS"
+version = "0.0.8"
+description = "Streamlit component providing tools to convert text to speech and play audio directly in the browser"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "Baptiste Ferrand", email = "bferrand.maths@gmail.com.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "streamlit>=0.63",
+    "pydub",
+    "gtts",
+]
+
+[project.urls]
+Homepage = "https://github.com/B4PT0R/streamlit-TTS"
+Repository = "https://github.com/B4PT0R/streamlit-TTS"
+
+[tool.setuptools]
+packages = ["streamlit_TTS"]
+include-package-data = true
