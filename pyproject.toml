@@ -25,6 +25,12 @@ dependencies = [
     "streamlit>=0.63",
     "pydub",
     "gtts",
+    "python-dotenv",
+]
+
+[project.optional-dependencies]
+openai = [
+    "openai>=1.0.0",
 ]
 
 [project.urls]
