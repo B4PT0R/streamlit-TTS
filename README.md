@@ -223,6 +223,40 @@ The component automatically handles browser autoplay restrictions with multiple 
 - pydub
 - openai (optional, for OpenAI TTS features)
 
+## Troubleshooting
+
+### NumPy Compatibility Issues
+
+If you encounter NumPy 2.x compatibility errors with PyArrow or other packages:
+
+```
+A module that was compiled using NumPy 1.x cannot be run in NumPy 2.x...
+```
+
+This is a known compatibility issue between NumPy 2.x and some dependencies. You have several options:
+
+**Option 1: Use a virtual environment with compatible versions**
+```bash
+# Create a new environment with NumPy 1.x
+pip install "numpy<2.0.0"
+pip install streamlit-TTS
+```
+
+**Option 2: Upgrade dependent packages**
+```bash
+# Update packages that support NumPy 2.x
+pip install --upgrade pyarrow pandas
+```
+
+**Option 3: Use conda**
+```bash
+conda create -n myenv python=3.10 numpy=1.26
+conda activate myenv
+pip install streamlit-TTS
+```
+
+Note: This package doesn't strictly require NumPy itself, but pydub (used for audio processing) may pull it in as a transitive dependency. The NumPy version is intentionally not constrained to avoid conflicts with other packages in your environment.
+
 ## License
 
 MIT
